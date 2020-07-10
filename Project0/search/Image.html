@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Images Search</title>
+        <style>
+        #form-container {
+          text-align: center;
+          position: relative;
+          top: 150px;
+        }
+
+        #searchbar {
+          height: 40px;
+          width: 35%;
+          padding-left: 20px;
+          padding-right: 20px;
+          border-radius: 20px 20px 20px 20px;
+          border-width: thin;
+          border-color: Silver;
+          border-style: solid;
+          font-size: 17px;
+          margin: auto;
+          display: block;
+        }
+
+        #searchbar:focus {
+          outline: 0;
+          box-shadow: 0px 0px 5px 2px Silver;
+        }
+
+        #searchbar:hover {
+          box-shadow: 0px 0px 5px 2px Silver;
+        }
+
+        #image {
+          width: 275px;
+          height: auto;
+        }
+
+        #image-container {
+          display: inline-block;
+          width: 275px;
+          height: auto;
+          margin-bottom: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 30px;
+            height: 35px;
+            width: 150px;
+            background-color: #E8E8E8;
+            border-width: 0;
+            border-style: solid;
+            color: 	#505050;
+            font-size: 15px;
+            border-radius: 5px 5px 5px 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .button:hover {
+          border-width: 1.5px;
+          border-color: Silver;
+          color: black;
+        }
+
+        .button:focus {
+          outline: 0;
+          border-width: 1.5px;
+          border-color: #0099FF;
+          color: black;
+        }
+
+        .button:active {
+          outline: 0;
+        }
+
+        span {
+          color: #0099FF;
+          font-size: 17px;
+          position: relative;
+          display: inline-block;
+          font-family: Tahoma;
+          right: -105px;
+          top: -22px;
+        }
+
+        #navbar {
+          position: absolute;
+          right: 0;
+          margin-right: 30px;
+          margin-top: 10px;
+        }
+
+        a {
+          margin: 10px;
+          color: black;
+          font-size: 14px;
+          text-decoration: none;
+          font-family: sans-serif;
+        }
+
+        a:hover {
+          color: gray;
+          text-decoration: underline;
+        }
+
+        </style>
+    </head>
+    <body>
+      <div id="navbar">
+        <a href="Index.html">Home</a>
+      </div>
+      <div id="form-container">
+        <div id="image-container">
+          <img id="image" src="googlelogo.png">
+          <span>images</span>
+        </div>
+        <form action="https://google.com/search">
+            <input name="tbm" value="isch" type="hidden">
+            <input id="searchbar" type="text" name="q">
+            <input class="button" type="submit" value="Google Search">
+        </form>
+      </div>
+    </body>
+</html>

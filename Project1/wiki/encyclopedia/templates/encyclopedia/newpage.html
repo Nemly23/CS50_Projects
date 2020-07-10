@@ -1,0 +1,33 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <h1>New Page</h1>
+
+    <form action="{% url 'newpage'%}" method="post">{% csrf_token %}
+      <div class="form-group">
+        <label for="title">Page Name</label>
+        {% if title %}
+          <input type="text" class="form-control is-invalid" id="title" name="title" aria-describedby="Page name" value= "{{ title }}" required>
+          <div class="invalid-feedback">
+            Title already exist.
+          </div>
+        {% else %}
+          <input type="text" class="form-control" id="title" name="title" aria-describedby="Page name" required>
+        {% endif %}
+      </div>
+      <div class="mb-3">
+        <label for="content">Page body (Markdown)</label>
+        {% if content %}
+          <textarea rows="15" class="form-control" id="content" name="content" placeholder="" required>{{ content }}</textarea>
+        {% else %}
+          <textarea rows="15"class="form-control" id="content" name="content" placeholder="" required></textarea>
+        {% endif %}
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+{% endblock %}

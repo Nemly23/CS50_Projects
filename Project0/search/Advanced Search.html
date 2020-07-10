@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Advanced Search</title>
+        <style>
+
+        img {
+          width: auto;
+          height: 30px;
+          margin: 15px;
+        }
+
+        .button {
+            position: relative;
+            left: 625px;
+            display: inline-block;
+            height: 30px;
+            width: 120px;
+            background-color: #4d7dff;
+            border-color: #3f73fc;
+            border-width: 1px;
+            border-style: solid;
+            color: 	White;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px 3px 3px 3px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .button:hover {
+          outline-style: solid;
+          background-color: #3f73fc;
+          border-color: #1454ff;
+        }
+
+        .button:focus {
+          outline-width: 1.5px;
+          outline-color: white;
+          outline-offset: -3px;
+        }
+
+        .button:active {
+          outline: 0;
+        }
+
+        header {
+          color: #cf4040;
+          font-family: sans-serif;
+          font-size: 20px;
+          padding: 25px;
+          padding-left: 45px;
+          border-bottom-width: thin;
+          border-bottom-color: #f0f0f0;
+          border-bottom-style: solid;
+        }
+
+        #form-container {
+          padding-left: 45px;
+          padding-top: 45px;
+        }
+
+        .lable {
+          width: 175px;
+          display: inline-block;
+        }
+
+        .form-header {
+          width: 180px;
+          display: inline-block;
+          font-size: 16px;
+          color: #363636;
+        }
+
+        .line {
+          height: 42px;
+          font-family: sans-serif;
+          font-size: 13px;
+        }
+
+        .searchbar {
+          height: 25px;
+          width: 570px;
+          border-color: Silver;
+          border-style: solid;
+          border-width: 1px;
+        }
+
+        .searchbar:focus {
+          outline: 0;
+          border-color: #4d7dff;
+          box-shadow: inset 0px 1px 2px 0px Silver;
+        }
+
+        .top {
+          height: 60px;
+          background-color: #f0f0f0;
+        }
+
+        body {
+          margin: 0;
+        }
+
+        #navbar {
+          display: inline-block;
+          position: absolute;
+          right: 0;
+          margin-right: 30px;
+          margin-top: 20px;
+        }
+
+        a {
+          margin: 10px;
+          color: black;
+          font-size: 14px;
+          text-decoration: none;
+          font-family: sans-serif;
+        }
+
+        a:hover {
+          color: gray;
+          text-decoration: underline;
+        }
+
+        </style>
+    </head>
+    <body>
+      <div class="top">
+        <img src="googlelogo.png">
+        <div id="navbar">
+          <a href="index.html">Home</a>
+        </div>
+      </div>
+      <header>
+        Advanced Search
+      </header>
+      <div id="form-container">
+        <form action="https://google.com/search">
+          <div class="line">
+            <div class="form-header"> Find pages with... </div>
+          </div>
+          <div class="line">
+            <div class="lable"> all these words: </div> <input class="searchbar" type="text" name="as_q">
+          </div>
+          <div class="line">
+            <div class="lable"> this exact word or phrase: </div> <input class="searchbar" type="text" name="as_epq">
+          </div>
+          <div class="line">
+            <div class="lable"> any of these words:</div> <input class="searchbar" type="text" name="as_oq">
+          </div>
+          <div class="line">
+            <div class="lable"> none of these words: </div> <input class="searchbar" type="text" name="as_eq">
+          </div>
+          <input class="button" type="submit" value="Advanced Search">
+        </form>
+      <div>
+    </body>
+</html>

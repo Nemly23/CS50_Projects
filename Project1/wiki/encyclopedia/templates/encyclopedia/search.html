@@ -1,0 +1,25 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block body %}
+    <h2>All results for <span style="color: red">{{ query }}</span></h2>
+
+    <ul>
+        {% for result in results %}
+            <li><a href="{% url 'entry' result%}">{{ result }}</a>
+        {% endfor %}
+    </ul>
+
+    <h2>All results related to <span style="color: red">{{ query }}</span></h2>
+
+    <ul>
+        {% for result, value in related %}
+          <li><a href="{% url 'entry' result%}">{{ result }}</a>
+            {{ value }}
+        {% endfor %}
+    </ul>
+
+{% endblock %}
