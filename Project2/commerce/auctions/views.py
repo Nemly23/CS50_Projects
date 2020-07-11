@@ -61,3 +61,9 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+def createlist(request):
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "auctions/register.html")
