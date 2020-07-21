@@ -1,0 +1,152 @@
+{% extends "auctions/layout.html" %}
+
+{% block style %}
+        <style>
+          .panel-heading {
+            border-width: thin;
+            height: 40px;
+            background-color: #ededed;
+            padding: 7px;
+            border-radius: 10px 10px 0px 0px;
+          }
+
+          .panel-title {
+            font-size: 20px;
+            display:inline;
+          }
+
+          #panel-default {
+            border-radius: 10px 10px 0px 0px;
+            border-width: thin;
+          }
+
+          .panel-body {
+            padding:0px;
+          }
+
+          .list-group-item {
+            height: 120px;
+            border-width: thin;
+          }
+
+          .comment-text {
+            font-size: 15px;
+            line-break: auto;
+            overflow-wrap: break-word;
+          }
+
+          .label-info {
+            float: right;
+            font-size: 15px;
+            color: White;
+            background-color: #03bafc;
+            width: 30px;
+            border-radius: 5px;
+          }
+
+        </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+      {% if auction.active %}
+        <h3>Active</h3>
+      {% else %}
+        <h3>Closed</h3>
+        {% if auction.bid.owner == user %}
+          <h3>You have won this auction</h3>
+        {% endif %}
+      {% endif %}
+      <h2>{{ auction.title }}</h2>
+      {% if user.is_authenticated %}
+        <form action="{% url 'listingpage' auction.pk%}" method="post">{% csrf_token %}
+          Watchlist
+          <label class="switch">
+            <input type="hidden" name="send" value=True>
+            {% if watch %}
+            <input type="checkbox" name="watchlist" onChange="this.form.submit()" value=True checked>
+            {% else %}
+            <input type="checkbox" name="watchlist" onChange="this.form.submit()" value=True>
+            {% endif %}
+            <span class="slider round"></span>
+          </label>
+        </form>
+      {% endif %}
+      <div>
+      {% for category in auction.category.all %}
+        <span class="badge badge-primary">{{ category.name }}</span>
+      {% endfor %}
+      </div>
+      {% if auction.image %}
+        <a href=""><img src="{{ auction.image }}" height=400px width=auto ></a>
+      {% else %}
+        <a href=""><img src="https://www.freeiconspng.com/uploads/no-image-icon-11.PNG" height=400px width=auto></a>
+      {% endif %}
+      <div>{{ auction.description }}</div>
+      <p class="font-weight-bold">Price: {{ auction.bid }}</p>
+      {% if user.is_authenticated and auction.active %}
+        {% if user == auction.owner %}
+          <form action="{% url 'listingpage' auction.pk%}" method="post">{% csrf_token %}
+            <input type="hidden" name="close" value=True>
+            <button type="submit" class="btn btn-primary">Close Auction</button>
+          </form>
+        {% else %}
+          <form action="{% url 'listingpage' auction.pk%}" method="post">{% csrf_token %}
+            <div class="form-group">
+              {% if invalid %}
+                <input class="form-control currency is-invalid" type="number" name="bid" step=0.01 placeholder="" required>
+                <div class="invalid-feedback">
+                  Bid is smaller than current value.
+                </div>
+              {% else %}
+                <input class="form-control currency" type="number" name="bid" step=0.01 placeholder="" required>
+              {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Place Bid</button>
+          </form>
+        {% endif %}
+      {% endif %}
+      <p class="font-weight-bold">Listed by: {{ auction.owner }}</p>
+      <br>
+      <div class="row">
+        <div class="col-12 p-0 border" id="panel-default">
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-comment"></span>
+                <h3 class="panel-title">
+                    Comments</h3>
+                <span class="label label-info d-flex justify-content-center">
+                    {{ comments|length }}</span>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                  {% for comment in auction.comment.all %}
+                    <li class="list-group-item border-top">
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    <!--<a href="http://www.jquery2dotnet.com/2013/10/google-style-login-page-desing-usign.html">
+                                        Google Style Login Page Design Using Bootstrap</a>-->
+                                    <div class="mic-info">
+                                        By: {{ comment.owner }} on {{ comment.date }}
+                                    </div>
+                                </div>
+                                <div class="comment-text">
+                                    {{ comment.message }}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 p-0">
+          <form action="{% url 'listingpage' auction.pk %}" method="post">{% csrf_token %}
+            <textarea maxlength="480" rows="4" class="form-control" id="comment" name="comment" placeholder="" required></textarea>
+            <button type="submit" class="btn btn-primary float-right">Comment</button>
+          </form>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

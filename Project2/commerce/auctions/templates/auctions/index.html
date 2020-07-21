@@ -1,7 +1,23 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
-
-    TODO
+    <div class="container">
+      <h2>Active Listings</h2>
+    {% for auction in auctions %}
+      <div class="row border mb-3" style="height: 200px">
+        <div class="col-4 d-flex justify-content-center">
+          {% if auction.image %}
+            <a href="{% url 'listingpage' auction.pk %}"><img src="{{ auction.image }}" height=200px width=auto ></a>
+          {% else %}
+            <a href="{% url 'listingpage' auction.pk %}"><img src="https://www.freeiconspng.com/uploads/no-image-icon-11.PNG" height=200px width=auto></a>
+          {% endif %}
+        </div>
+        <div class="col-8">
+          <a href="{% url 'listingpage' auction.pk %}">{{ auction.title }}</a>
+          <div>{{ auction.description }}</div>
+          <p class="font-weight-bold">Price: {{ auction.bid }}</p>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
 {% endblock %}

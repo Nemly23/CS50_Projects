@@ -1,0 +1,65 @@
+textarea {
+    min-height: 400px;
+}
+
+#emails-view {
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 1px solid Gray;
+  border-radius: 10px;
+  padding:0;
+}
+#emails-title {
+  background-color: #f2f2f2;
+  border-bottom: 1px solid Gray;
+  border-radius: 10px 10px 0px 0px;
+  font-size: 25px;
+  padding: 15px 20px 10px 20px;
+  color: #98978b;
+  margin: 0;
+  font-weight: 600;
+}
+
+#emails-area {
+    border: 1px solid LightGray;
+    margin: 10px 10px 10px 10px;
+}
+
+#emails-legend {
+  height: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 2px solid #0088ff;
+}
+
+.emails-info {
+  height: 40px;
+  font-size: 14px;
+  color: Black;
+  font-weight: 600;
+  border-top: 1px solid LightGray;
+  cursor: pointer;
+}
+
+.emails-info:hover {
+  background-color: #0088ff;
+  color: White;
+  text-decoration: none;
+}
+
+.emails-info:focus {
+  background-color: #0088ff;
+  color: White;
+  text-decoration: none;
+}
+
+.date {
+  font-size: 13px;
+}
+
+#body-email {
+  min-height: 400px;
+}
+
+#header-email {
+  background-color: #f2f2f2;
+}
