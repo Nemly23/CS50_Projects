@@ -1,0 +1,11 @@
+#compose-body {
+  resize: none;
+  height: 7em;
+}
+
+@media (max-width:768px){
+    #compose-body {
+        height: 9em;
+    }
+
+}
