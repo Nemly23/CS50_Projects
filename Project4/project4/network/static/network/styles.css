@@ -9,3 +9,54 @@
     }
 
 }
+
+.post {
+  background-color: #6fc5ea7a;
+}
+
+.edit-btn {
+  left: 0;
+  float: right;
+  font-size: 12px;
+  height: 24px;
+  width: 50px;
+}
+
+.post-header {
+  background-color: #4aa8ff;
+  border-radius: 3px 3px 0 0;
+  font-weight: bold;
+}
+
+.post-body {
+  min-height: 80px;
+}
+
+.post-timestamp {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.img-like {
+  content: url("/static/network/image/like.png");
+  cursor: pointer;
+}
+
+.img-like:hover {
+  content: url("/static/network/image/liked.png");
+  opacity: 0.7;
+}
+
+.img-liked {
+  content: url("/static/network/image/liked.png");
+  cursor: pointer;
+}
+
+.img-disable {
+  content: url("/static/network/image/liked.png");
+}
+
+.img-liked:hover {
+  content: url("/static/network/image/like.png");
+  opacity: 0.7;
+}

@@ -123,6 +123,8 @@ def get_page(request):
         if request.user.is_authenticated:
             if request.user in post.likes.all():
                 post_s["liked"] = True
+            if request.user == post.owner:
+                post_s["owns"] = True
         posts_s.append(post_s)
 
     return JsonResponse(posts_s, safe=False)

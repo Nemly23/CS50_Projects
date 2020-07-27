@@ -27,5 +27,6 @@ class Post(models.Model):
             "body": self.body,
             "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p"),
             "likes": self.number_likes(),
-            "liked": False
+            "liked": False,
+            "owns": False
         }
