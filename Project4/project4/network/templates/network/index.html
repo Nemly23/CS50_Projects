@@ -4,6 +4,7 @@
 
 {% block body %}
     <div class="container ">
+    {% if user.is_authenticated %}
       <form id="compose-post" class="row justify-content-md-center">
         <div class="form-group p-0 mx-auto mb-0 col-lg-7 col-md-12 col-xs-12">
           <textarea maxlength="240" class="form-control border border-dark rounded " id="compose-body" name="compose-body" placeholder="Write a post ..." required></textarea>
@@ -12,6 +13,7 @@
           <input type="submit" class="btn btn-primary col-12 float-none" value="Post"/>
         </div>
       </form>
+    {% endif %}
       <div id="post-view">
       </div>
       <nav aria-label="...">

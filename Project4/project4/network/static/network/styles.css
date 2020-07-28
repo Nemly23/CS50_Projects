@@ -19,7 +19,7 @@
   float: right;
   font-size: 12px;
   height: 24px;
-  width: 50px;
+  width: 60px;
 }
 
 .post-header {
@@ -32,9 +32,26 @@
   min-height: 80px;
 }
 
+.post-edit {
+  resize: none;
+  height: 7em;
+  border-style: hidden;
+}
+
+@media (max-width:768px){
+    .post-edit {
+        height: 9em;
+    }
+
+}
+
 .post-timestamp {
   font-size: 12px;
   font-weight: bold;
+}
+
+.number-liked {
+  color: red;
 }
 
 .img-like {
@@ -43,8 +60,7 @@
 }
 
 .img-like:hover {
-  content: url("/static/network/image/liked.png");
-  opacity: 0.7;
+  content: url("/static/network/image/like_h.png");
 }
 
 .img-liked {
@@ -52,11 +68,10 @@
   cursor: pointer;
 }
 
-.img-disable {
-  content: url("/static/network/image/liked.png");
+.img-liked:hover {
+  content: url("/static/network/image/liked_h.png");
 }
 
-.img-liked:hover {
+.img-disable {
   content: url("/static/network/image/like.png");
-  opacity: 0.7;
 }

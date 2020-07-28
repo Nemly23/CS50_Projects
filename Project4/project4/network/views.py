@@ -128,3 +128,26 @@ def get_page(request):
         posts_s.append(post_s)
 
     return JsonResponse(posts_s, safe=False)
+
+@csrf_exempt
+@login_required
+def like_post(request, post_id):
+
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+
+    try:
+        p = Post.objects.get(pk=post_id)
+    except Email.DoesNotExist:
+        return JsonResponse({"error": "Email not found."}, status=404)
+
+
+    data = json.loads(request.body)
+    if data["like"]:
+        p.likes.add(request.user)
+        p.save()
+        return JsonResponse({"message": "Like added."}, status=201)
+    else:
+        p.likes.remove(request.user)
+        p.save()
+        return JsonResponse({"message": "Like removed."}, status=201)
