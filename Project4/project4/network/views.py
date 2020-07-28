@@ -32,9 +32,9 @@ def load_posts(request):
             return JsonResponse({"error": "No User signed."}, status=400)
     else:
         posts = Post.objects.all()
-        posts = posts.order_by("timestamp").all()
+        posts = posts.order_by('-timestamp').all()
     p = Paginator(posts, 10)
-    return JsonResponse({"npages": p.count },  safe=False)
+    return JsonResponse({"npages": p.num_pages },  safe=False)
 
 def login_view(request):
     if request.method == "POST":
@@ -143,11 +143,20 @@ def like_post(request, post_id):
 
 
     data = json.loads(request.body)
-    if data["like"]:
-        p.likes.add(request.user)
+    if data.get("edit") is not None:
+        new_body = data["edit"]
+        if request.user != p.owner:
+            return JsonResponse({"error": "User isn't authorized to edit this post."}, status=400)
+        p.body = new_body
         p.save()
-        return JsonResponse({"message": "Like added."}, status=201)
-    else:
-        p.likes.remove(request.user)
-        p.save()
-        return JsonResponse({"message": "Like removed."}, status=201)
+        return JsonResponse({"message": "Body edited."}, status=201)
+    if data.get("like") is not None:
+        if data["like"]:
+            p.likes.add(request.user)
+            p.save()
+            return JsonResponse({"message": "Like added."}, status=201)
+        else:
+            p.likes.remove(request.user)
+            p.save()
+            return JsonResponse({"message": "Like removed."}, status=201)
+    return JsonResponse({"error": "Invalid put request."}, status=400)
