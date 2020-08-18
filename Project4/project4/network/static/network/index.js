@@ -2,32 +2,66 @@ document.addEventListener('DOMContentLoaded', function() {
   var npages;
   var current = 1;
 
-  load_posts(following = false, npages, current);
+  if (document.querySelector('#user') != null){
+    document.querySelector('#following').addEventListener('click', () => load_posts(following = true, npages, current));
 
-  document.querySelector('#compose-post').onsubmit = () => {
-
-      const body = document.querySelector('#compose-body').value;
-
-      fetch('/create_post', {
-        method: 'POST',
-        body: JSON.stringify({
-            body: body
-        })
-      })
-      .then(response => response.json())
-      .then(result => {
-          // Print result
-          console.log(result);
-          document.querySelector('#compose-body').value = "";
-          load_posts(following = false, npages, current);
+    document.querySelector('#user').onclick =  () => {
+      const user_url = "/users/" + document.querySelector('#user').children[0].innerHTML;
+      fetch(user_url, {
+        method: 'GET'
+      }).then(response => response.json())
+      .then(user_profile => {
+        console.log(user_profile);
+        load_profile(user_profile);
+        npages = user_profile.npages;
+        current = 1;
+        load_page(npages, current);
+        window.scrollTo(0, 0);
       });
-      // Stop form from submitting
-      return false;
-  };
+    }
+
+    document.querySelector('#compose-post').onsubmit = () => {
+
+        const body = document.querySelector('#compose-body').value;
+
+        fetch('/create_post', {
+          method: 'POST',
+          body: JSON.stringify({
+              body: body
+          })
+        })
+        .then(response => response.json())
+        .then(result => {
+            // Print result
+            console.log(result);
+            document.querySelector('#compose-body').value = "";
+            load_posts(following = false, npages, current);
+        });
+        // Stop form from submitting
+        return false;
+    };
+  }
+
+  load_posts(following = false, npages, current);
 
 });
 
 function load_posts(following = false, npages, current) {
+  if (following) {
+    document.querySelector('#compose-post').style.display = "none";
+    document.querySelector('#page-header').innerHTML = "FOLLOWING";
+  }
+  else {
+    if (document.querySelector('#user') != null){
+      document.querySelector('#compose-post').style.display = "block";
+    }
+    else {
+      document.querySelector('#compose-post').style.display = "none";
+    }
+    document.querySelector('#page-header').innerHTML = "ALL POSTS";
+  }
+
+  document.querySelector('#user-view').style.display = "none";
 
   fetch('/load_posts', {
     method: 'POST',
@@ -73,9 +107,29 @@ function create_post (content, npages, current) {
 
   const header = document.createElement('div');
   header.className = 'post-header border-bottom border-dark pl-4 pr-2 py-2 m-0';
-  header.innerHTML = content.owner;
+  header.innerHTML = "";
 
   post.appendChild(header);
+
+  const user = document.createElement('div');
+  user.className = "post-user"
+  user.innerHTML = content.owner;
+  user.onclick =  () => {
+    const user_url = "/users/" + content.owner;
+    fetch(user_url, {
+      method: 'GET'
+    }).then(response => response.json())
+    .then(user_profile => {
+      console.log(user_profile);
+      load_profile(user_profile);
+      npages = user_profile.npages;
+      current = 1;
+      load_page(npages, current);
+      window.scrollTo(0, 0);
+    });
+  }
+  header.appendChild(user);
+
 
   if (content.owns) {
     const post_edit = document.createElement('textarea');
@@ -322,6 +376,64 @@ function nav_link (link_num, pag, npages, is_current = false) {
       link.className = "page-item";
       link.onclick = () => {
         load_page(npages, pag);
+      }
+    }
+  }
+}
+
+function load_profile (user) {
+  if (user.owns) {
+    document.querySelector("#compose-post").style.display = "block";
+  }
+  else {
+    document.querySelector("#compose-post").style.display = "none";
+  }
+
+  document.querySelector("#user-view").style.display = "block";
+
+  document.querySelector("#page-header").innerHTML = "Profile";
+
+  document.querySelector("#username").innerHTML = user.username;
+  document.querySelector("#followers-num").innerHTML = user.followers;
+  document.querySelector("#following-num").innerHTML = user.following;
+  if (user.owns || document.querySelector('#user') == null){
+    document.querySelector("#follow-btn").style.display = "none";
+  }
+  else {
+    document.querySelector("#follow-btn").style.display = "block";
+    if (user.is_following) {
+      document.querySelector("#follow-btn").value = "Unfollow";
+    }
+    else {
+      document.querySelector("#follow-btn").value = "Follow";
+    }
+    document.querySelector("#follow-btn").onclick = () => {
+      const user_url = "/users/" + user.username;
+      if (document.querySelector("#follow-btn").value == "Unfollow") {
+        fetch(user_url, {
+          method: 'PUT',
+          body: JSON.stringify({
+              follow: false
+          })
+        }).then(response => response.json())
+        .then(message => {
+          console.log(message);
+          document.querySelector("#follow-btn").value = "Follow";
+          document.querySelector("#followers-num").innerHTML = parseInt(document.querySelector("#followers-num").innerHTML, 10)-1;
+        });
+      }
+      else {
+        fetch(user_url, {
+          method: 'PUT',
+          body: JSON.stringify({
+              follow: true
+          })
+        }).then(response => response.json())
+        .then(message => {
+          console.log(message);
+          document.querySelector("#follow-btn").value = "Unfollow";
+          document.querySelector("#followers-num").innerHTML = parseInt(document.querySelector("#followers-num").innerHTML, 10)+1;
+        });
       }
     }
   }

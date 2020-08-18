@@ -4,8 +4,27 @@
 
 {% block body %}
     <div class="container ">
-    {% if user.is_authenticated %}
-      <form id="compose-post" class="row justify-content-md-center">
+      <div class="row justify-content-center">
+        <div id="page-header" class="row justify-content-center col-lg-10 col-md-12 col-xs-12 p-2">
+          POST
+        </div>
+      </div>
+      <div id="user-view">
+        <div id="user-profile" class="row mx-auto col-lg-8 col-md-12 col-xs-12 border border-dark">
+          <div id="username" class="align-self-center col-3">
+            kotonaru16
+          </div>
+          <div id="followers" class="col-3 align-self-center">
+            Followers <span id="followers-num" class="badge badge-light">9</span>
+          </div>
+          <div id="following" class="col-3 align-self-center">
+            Following <span id="following-num" class="badge badge-light">9</span>
+          </div>
+          <input id="follow-btn" class="btn btn-primary col-3 align-self-center" value="Follow"/>
+        </div>
+      </div>
+
+      <form id="compose-post" class="row justify-content-center">
         <div class="form-group p-0 mx-auto mb-0 col-lg-7 col-md-12 col-xs-12">
           <textarea maxlength="240" class="form-control border border-dark rounded " id="compose-body" name="compose-body" placeholder="Write a post ..." required></textarea>
         </div>
@@ -13,10 +32,10 @@
           <input type="submit" class="btn btn-primary col-12 float-none" value="Post"/>
         </div>
       </form>
-    {% endif %}
+
       <div id="post-view">
       </div>
-      <nav class="row justify-content-md-center" aria-label="...">
+      <nav class="row justify-content-center" aria-label="...">
         <ul class="pagination mx-auto">
           <li id="previous" class="page-item">
             <span class="page-link">Previous</span>

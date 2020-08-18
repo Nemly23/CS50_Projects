@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 
 from .models import User, Post
 
@@ -27,7 +27,8 @@ def load_posts(request):
     if following:
         if request.user.is_authenticated:
             following = request.user.following.all()
-            posts = Post.objects.filter(onwer__in=following)
+            posts = Post.objects.filter(owner__in=following)
+            posts = posts.order_by('-timestamp').all()
         else:
             return JsonResponse({"error": "No User signed."}, status=400)
     else:
@@ -109,16 +110,13 @@ def get_page(request):
 
     data = json.loads(request.body)
     page =  int(data.get("page", ""))
-
     try:
         posts = p.page(page)
     except EmptyPage:
         return JsonResponse({"error": "Not valid page"}, status=400)
 
-    print(posts.object_list)
     posts_s = []
     for post in posts.object_list:
-        print(post)
         post_s = post.serialize()
         if request.user.is_authenticated:
             if request.user in post.likes.all():
@@ -138,8 +136,8 @@ def like_post(request, post_id):
 
     try:
         p = Post.objects.get(pk=post_id)
-    except Email.DoesNotExist:
-        return JsonResponse({"error": "Email not found."}, status=404)
+    except p.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
 
 
     data = json.loads(request.body)
@@ -160,3 +158,38 @@ def like_post(request, post_id):
             p.save()
             return JsonResponse({"message": "Like removed."}, status=201)
     return JsonResponse({"error": "Invalid put request."}, status=400)
+
+@csrf_exempt
+def user_profile(request, username):
+    global p
+    if request.method == "POST":
+        return JsonResponse({"error": "PUT or GET request required."}, status=400)
+
+    try:
+        u = User.objects.get(username = username)
+    except u.DoesNotExist:
+        return JsonResponse({"error": "User no found."}, status=404)
+    if request.method == "GET":
+        profile = u.serialize()
+        if request.user.is_authenticated:
+            if u == request.user:
+                profile["owns"] = True
+            if request.user in u.followers.all():
+                profile["is_following"] = True
+        p = Paginator(u.get_posts(), 10)
+        profile["npages"] = p.num_pages
+        return JsonResponse(profile, safe=False)
+
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        if data.get("follow") is None or not request.user.is_authenticated:
+            return JsonResponse({"error": "Invalid PUT request."}, status=404)
+        else:
+            if data.get("follow"):
+                u.followers.add(request.user)
+                u.save()
+                return JsonResponse({"message": "Followed"}, status=201)
+            else:
+                u.followers.remove(request.user)
+                u.save()
+                return JsonResponse({"message": "Unfollowed"}, status=201)

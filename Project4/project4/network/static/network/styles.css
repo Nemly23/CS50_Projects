@@ -88,3 +88,34 @@
 .page-link {
   cursor: pointer;
 }
+
+#following:focus {
+  outline-style: none;
+}
+
+#page-header {
+  background-color: #3853ff;
+  color: White;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#user-profile {
+  background-color: #6fc5ea7a;
+  height: 80px;
+}
+
+#username {
+  font-size: 20px;
+  font-weight: bold;
+  color:
+}
+
+.post-user {
+  cursor: pointer;
+  display: inline;
+}
+
+.post-user:hover {
+  color: #565656;
+}
